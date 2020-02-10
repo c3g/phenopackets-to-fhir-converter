@@ -7,6 +7,7 @@ class PatientTestCase(unittest.TestCase):
     def test_individual(self):
         individual = fhir_patient(INDIVIDUAL)
         self.assertIsInstance(individual['extension'], list)
+        self.assertEqual(len(individual['extension']), 3)
         self.assertEqual(individual['resourceType'], 'Patient')
         for i, extension in enumerate(individual['extension']):
             self.assertIsNotNone(extension['url'])

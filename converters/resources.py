@@ -7,7 +7,9 @@ from fhirclient.models import (observation as obs, patient as p, extension, age,
                                documentreference, attachment, fhirdate, condition as cond,
                                composition as comp
                                )
-
+from .validate import validate_schema, SCHEMA_PATH
+import os
+import jsonschema
 
 ##################### Generic FHIR conversion functions #####################
 
@@ -87,40 +89,48 @@ def check_disease_onset(disease):
 def fhir_patient(obj):
     """ Converts Individual to FHIR Patient. """
 
-    patient = p.Patient()
-    patient.id = obj['id']
-    patient.birthDate = fhirdate.FHIRDate(obj.get('date_of_birth', None))
-    patient.gender = obj.get('sex', None)
-    patient.active = obj.get('active', None)
-    patient.deceasedBoolean = obj.get('deceased', None)
-    patient.extension = list()
-    # age
-    if 'age' in obj.keys():
-        age_extension = fhir_age(obj, PHENOPACKETS_ON_FHIR_MAPPING['individual']['age'], 'age')
-        patient.extension.append(age_extension)
-    # karyotypic_sex
-    karyotypic_sex_extension = extension.Extension()
-    karyotypic_sex_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypic_sex']['url']
-    karyotypic_sex_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
-    karyotypic_sex_extension.valueCodeableConcept.coding = list()
-    coding = c.Coding()
-    coding.display = obj.get('karyotypic_sex', None)
-    coding.code = obj.get('karyotypic_sex', None)
-    coding.system = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypic_sex']['system']
-    karyotypic_sex_extension.valueCodeableConcept.coding.append(coding)
-    patient.extension.append(karyotypic_sex_extension)
-    # taxonomy
-    if 'taxonomy' in obj.keys():
-        taxonomy_extension = extension.Extension()
-        taxonomy_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['taxonomy']
-        taxonomy_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
-        taxonomy_extension.valueCodeableConcept.coding = list()
+    # first validate if phenopackets object is well-formed
+    schema_path = os.path.join(SCHEMA_PATH, 'individual_schema.json')
+    check_obj = validate_schema(schema_path, obj)
+    if check_obj:
+        patient = p.Patient()
+        patient.id = obj['id']
+        patient.birthDate = fhirdate.FHIRDate(obj.get('dateOfBirth', None))
+        patient.gender = obj.get('sex', None)
+        patient.active = obj.get('active', None)
+        patient.deceasedBoolean = obj.get('deceased', None)
+        patient.extension = list()
+        # age
+        if 'age' in obj.keys():
+            age_extension = fhir_age(obj, PHENOPACKETS_ON_FHIR_MAPPING['individual']['age'], 'age')
+            patient.extension.append(age_extension)
+        # karyotypic_sex
+        karyotypic_sex_extension = extension.Extension()
+        #TODO decide what to do with mappings that use snake_case
+        karyotypic_sex_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypic_sex']['url']
+        karyotypic_sex_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
+        karyotypic_sex_extension.valueCodeableConcept.coding = list()
         coding = c.Coding()
-        coding.display = obj.get('taxonomy', None).get('label', None)
-        coding.code = obj.get('taxonomy', None).get('id', None)
-        taxonomy_extension.valueCodeableConcept.coding.append(coding)
-        patient.extension.append(taxonomy_extension)
-    return patient.as_json()
+        coding.display = obj.get('karyotypicSex', None)
+        coding.code = obj.get('karyotypicSex', None)
+        coding.system = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypic_sex']['system']
+        karyotypic_sex_extension.valueCodeableConcept.coding.append(coding)
+        patient.extension.append(karyotypic_sex_extension)
+        # taxonomy
+        if 'taxonomy' in obj.keys():
+            taxonomy_extension = extension.Extension()
+            taxonomy_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['taxonomy']
+            taxonomy_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
+            taxonomy_extension.valueCodeableConcept.coding = list()
+            coding = c.Coding()
+            coding.display = obj.get('taxonomy', None).get('label', None)
+            coding.code = obj.get('taxonomy', None).get('id', None)
+            taxonomy_extension.valueCodeableConcept.coding.append(coding)
+            patient.extension.append(taxonomy_extension)
+        return patient.as_json()
+
+    else:
+        raise Exception("The individual object is not valid.")
 
 
 def fhir_specimen_collection(obj):
@@ -136,6 +146,11 @@ def fhir_specimen_collection(obj):
 
 def fhir_observation(obj):
     """ Converts phenotypic feature to FHIR Observation. """
+    schema_path = os.path.join(SCHEMA_PATH, 'phenotypic_feature_schema.json')
+    try:
+        validate_schema(schema_path, obj)
+    except jsonschema.exceptions.ValidationError:
+        raise Exception("The phenotypic feature object is not valid.")
 
     observation = obs.Observation()
     if 'description' in obj.keys():
@@ -166,7 +181,7 @@ def fhir_observation(obj):
         evidence.extension = []
         evidence_code = extension.Extension()
         evidence_code.url = PHENOPACKETS_ON_FHIR_MAPPING['phenotypic_feature']['evidence']['evidence_code']
-        evidence_code.valueCodeableConcept = fhir_codeable_concept(obj['evidence']['evidence_code'])
+        evidence_code.valueCodeableConcept = fhir_codeable_concept(obj['evidence']['evidenceCode'])
         evidence.extension.append(evidence_code)
         if 'reference' in obj['evidence'].keys():
             evidence_reference = extension.Extension()
@@ -174,7 +189,7 @@ def fhir_observation(obj):
             evidence_reference.extension = []
             evidence_reference_id = extension.Extension()
             evidence_reference_id.url = PHENOPACKETS_ON_FHIR_MAPPING['external_reference']['id_url']
-            # GA$GH guide requires valueURL but there is no such property
+            # GA4GH guide requires valueURL but there is no such property
             evidence_reference_id.valueUri = obj['evidence']['reference']['id']
             evidence_reference.extension.append(evidence_reference_id)
             if 'description' in obj['evidence']['reference'].keys():

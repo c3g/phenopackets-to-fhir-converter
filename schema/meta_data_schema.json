@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets MetaData schema",
+    "description": "A structured definition of the resources and ontologies used within a phenopacket.",
+    "type": "object",
+    "properties": {
+        "created": {
+            "type": "string",
+            "description": "ISO8601 timestamp specifying when when this object was created."
+        },
+        "createdBy": {
+            "type": "string",
+            "description": "Name of the person who created the phenopacket."
+        },
+        "submittedBy": {
+            "type": "string",
+            "description": "Name of the person who submitted the phenopacket."
+        },
+        "resources": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique researcher-specified identifier for the resource."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Human-readable name for the resource."
+                    },
+                    "namespacePrefix": {
+                        "type": "string",
+                        "description": "Prefix for objects from this resource. In the case of ontology resources, this should be the CURIE prefix."
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Resource URL. In the case of ontologies, this should be an OBO or OWL file. Other resources should link to the official or top-level url."
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "The version of the resource or ontology used to make the annotation."
+                    },
+                    "iriPrefix": {
+                        "type": "string",
+                        "description": "The IRI prefix, when used with the namespace prefix and an object ID, should resolve the term or object from the resource in question."
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "namespace_prefix",
+                    "url",
+                    "version",
+                    "iri_prefix"
+                ],
+                "description": "A description of an external resource used for referencing an object."
+            },
+            "description": "A list of resources or ontologies referenced in the phenopacket"
+        },
+        "updates": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "string",
+                        "description": "ISO8601 timestamp specifying when when this update occurred."
+                    },
+                    "updatedBy": {
+                        "type": "string",
+                        "description": "Information about the person/organization/network that performed the update."
+                    },
+                    "comment": {
+                        "type": "string",
+                        "description": "Free-text comment about the changes made and/or the reason for the update."
+                    }
+                },
+                "required": [
+                    "timestamp",
+                    "comment"
+                ],
+                "description": "An update event for a record (e.g. a phenopacket.)"
+            },
+            "description": "A list of updates to the phenopacket."
+        },
+        "phenopacketSchemaVersion": {
+            "type": "string",
+            "description": "Schema version of the current phenopacket."
+        },
+        "externalReferences": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "An application-specific free-text description."
+                    }
+                },
+                "required": [
+                    "id"
+                ],
+                "description": "An encoding of information about a reference to an external resource."
+            },
+            "description": "A list of external (non-resource) references."
+        }
+    }
+}

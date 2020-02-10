@@ -1,0 +1,73 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets Individual schema",
+    "description": "A subject of a phenopacket, representing either a human (typically) or another organism.",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "A unique researcher-specified identifier for an individual."
+        },
+        "alternateIds": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "One of possibly many alternative identifiers for an individual."
+            },
+            "description": "A list of alternative identifiers for an individual."
+        },
+        "dateOfBirth": {
+            "type": "string",
+            "description": "A timestamp representing an individual's date of birth; either exactly or imprecisely."
+        },
+        "sex": {
+            "type": "string",
+            "enum": [
+                "UNKNOWN_SEX",
+                "FEMALE",
+                "MALE",
+                "OTHER_SEX"
+            ],
+            "description": "The phenotypic sex of an individual, as would be determined by a midwife or physician at birth."
+        },
+        "karyotypicSex": {
+            "type": "string",
+            "enum": [
+                "UNKNOWN_KARYOTYPE",
+                "XX",
+                "XY",
+                "XO",
+                "XXY",
+                "XXX",
+                "XXYY",
+                "XXXY",
+                "XXXX",
+                "XYY",
+                "OTHER_KARYOTYPE"
+            ],
+            "description": "The karyotypic sex of an individual."
+        },
+        "taxonomy": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+        }
+    },
+    "required": [
+        "id"
+    ]
+}

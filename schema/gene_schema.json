@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets Gene schema",
+    "description": "A representation of an identifier for a gene.",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Official identifier of the gene. It SHOULD be a CURIE identifier with a prefix used by the official organism gene nomenclature committee, e.g. HGNC:347 for humans."
+        },
+        "alternateIds": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "An alternative identifier from a resource where the gene is used or catalogued."
+            },
+            "description": "A list of identifiers for alternative resources where the gene is used or catalogued."
+        },
+        "symbol": {
+            "type": "string",
+            "description": "A gene's official gene symbol as designated by the organism's gene nomenclature committee, e.g. ETF1 from the HUGO Gene Nomenclature committee."
+        }
+    },
+    "required": [
+        "id",
+        "symbol"
+    ]
+}

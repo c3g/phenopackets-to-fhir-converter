@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets Disease schema",
+    "description": "A representation of a diagnosis, i.e. an inference or hypothesis about the cause underlying the observed phenotypic abnormalities.",
+    "type": "object",
+    "properties": {
+        "term": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+        },
+        "onset": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string",
+                    "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                }
+            },
+            "required": [
+                "age"
+            ],
+            "description": "A representation of the age of onset of the disease"
+        },
+        "diseaseStage": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "A CURIE-style identifier for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "A human readable class name for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+                    }
+                },
+                "required": [
+                    "id",
+                    "label"
+                ],
+                "description": "An ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+            },
+            "description": "A list of terms representing the disease stage. Elements should be derived from child terms of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+        },
+        "tnmFinding": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "A CURIE-style identifier for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "A human readable class name for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+                    }
+                },
+                "required": [
+                    "id",
+                    "label"
+                ],
+                "description": "An ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+            },
+            "description": "A list of terms representing the tumour TNM score. Elements should be derived from child terms of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+        }
+    },
+    "required": [
+        "term"
+    ]
+}

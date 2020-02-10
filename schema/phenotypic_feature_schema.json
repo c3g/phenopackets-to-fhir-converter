@@ -1,0 +1,140 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets phenotypic feature schema",
+    "description": "A description of a phenotype that characterizes a subject or biosample of a Phenopacket.",
+    "type": "object",
+    "properties": {
+        "description": {
+            "type": "string",
+            "description": "Human-readable text describing the phenotypic feature; NOT for structured text."
+        },
+        "type": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term which describes the phenotype."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term which describes the phenotype."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term which describes the phenotype."
+        },
+        "negated": {
+            "type": "boolean",
+            "description": "Whether the feature is present (false) or absent (true, feature is negated); default is false."
+        },
+        "severity": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that describes the severity of the condition."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that describes the severity of the condition."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term that describes the severity of the condition."
+        },
+        "modifier": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "A CURIE-style identifier for an ontology term that expounds on the phenotypic feature."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "A human readable class name for an ontology term that expounds on the phenotypic feature."
+                    }
+                },
+                "required": [
+                    "id",
+                    "label"
+                ],
+                "description": "An ontology term that expounds on the phenotypic feature."
+            },
+            "description": "A list of ontology terms that provide more expressive / precise descriptions of a phenotypic feature, including e.g. positionality or external factors."
+        },
+        "onset": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+        },
+        "evidence": {
+            "type": "object",
+            "properties": {
+                "evidenceCode": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "A CURIE-style identifier for an ontology term that represents the evidence type."
+                        },
+                        "label": {
+                            "type": "string",
+                            "description": "A human readable class name for an ontology term that represents the evidence type."
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "label"
+                    ],
+                    "description": "An ontology term that represents the evidence type."
+                },
+                "reference": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "An application-specific free-text description."
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "description": "An encoding of information about a reference to an external resource."
+                }
+            },
+            "required": [
+                "evidenceCode"
+            ],
+            "description": "One or more pieces of evidence that specify how the phenotype was determined."
+        }
+    },
+    "required": [
+        "type"
+    ]
+}

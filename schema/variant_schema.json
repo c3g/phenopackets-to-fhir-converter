@@ -1,0 +1,111 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TODO",
+    "title": "Phenopackets None schema",
+    "description": "A representation used to describe candidate or diagnosed causative variants.",
+    "type": "object",
+    "properties": {
+        "allele": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "todo",
+            "title": "Allele schema",
+            "description": "The variant's corresponding allele",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "hgvs": {
+                    "type": "string"
+                },
+                "genomeAssembly": {
+                    "type": "string"
+                },
+                "chr": {
+                    "type": "string"
+                },
+                "pos": {
+                    "type": "integer"
+                },
+                "re": {
+                    "type": "string"
+                },
+                "alt": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "seqId": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "integer"
+                },
+                "deletedSequence": {
+                    "type": "string"
+                },
+                "insertedSequence": {
+                    "type": "string"
+                },
+                "iscn": {
+                    "type": "string"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "hgvs"
+                    ]
+                },
+                {
+                    "required": [
+                        "genomeAssembly"
+                    ]
+                },
+                {
+                    "required": [
+                        "seqId"
+                    ]
+                },
+                {
+                    "required": [
+                        "iscn"
+                    ]
+                }
+            ],
+            "dependencies": {
+                "genomeAssembly": [
+                    "chr",
+                    "pos",
+                    "re",
+                    "alt",
+                    "info"
+                ],
+                "seqId": [
+                    "position",
+                    "deletedSequence",
+                    "insertedSequence"
+                ]
+            }
+        },
+        "zygosity": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "description": "An ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+        }
+    }
+}

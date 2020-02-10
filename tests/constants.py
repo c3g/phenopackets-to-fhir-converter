@@ -50,3 +50,46 @@ PHENOTYPIC_FEATURE = {
         }
     ]
 }
+
+BIOSAMPLE = {
+    "id": "biosample:test01",
+    "sampledTissue": {
+        "id": "UBERON_0004228",
+        "label": "urinary bladder smooth muscle"
+    },
+    "individualAgeAtCollection": {
+        "age": "P47Y"
+    },
+    "histological_diagnosis": {
+        "id": "NCIT:C39853",
+        "label": "Infiltrating Urothelial Carcinoma"
+    },
+    "tumorProgression": {
+        "id": "NCIT:C84509",
+        "label": "Primary Malignant Neoplasm"
+    },
+    "tumorGrade": {
+        "id": "NCIT:C28076",
+        "label": "Disease Grade Qualifier"
+    },
+    "diagnosticMarkers": [
+        {
+            "id": "NCIT:C68748",
+            "label": "HER2/Neu Positive"
+        },
+        {
+            "id": "NCIT:C131711",
+            "label": "Human Papillomavirus-18 Positive"
+        }
+    ],
+    "procedure": {
+        "code": {
+            "id": "NCIT:C5189",
+            "label": "Radical Cystoprostatectomy"
+        },
+        "bodySite": {
+            "id": "UBERON_0001556",
+            "label": "lower urinary tract"
+        }
+    }
+}

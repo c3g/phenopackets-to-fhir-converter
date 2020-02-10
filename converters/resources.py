@@ -146,6 +146,7 @@ def fhir_specimen_collection(obj):
 
 def fhir_observation(obj):
     """ Converts phenotypic feature to FHIR Observation. """
+
     schema_path = os.path.join(SCHEMA_PATH, 'phenotypic_feature_schema.json')
     try:
         validate_schema(schema_path, obj)
@@ -209,6 +210,11 @@ def fhir_observation(obj):
 def fhir_specimen(obj):
     """ Converts biosample to FHIR Specimen. """
 
+    schema_path = os.path.join(SCHEMA_PATH, 'biosample_schema.json')
+    try:
+        validate_schema(schema_path, obj)
+    except jsonschema.exceptions.ValidationError:
+        raise Exception("The biosample object is not valid.")
     specimen = s.Specimen()
     specimen.identifier = []
     # id
@@ -222,8 +228,8 @@ def fhir_specimen(obj):
     specimen.type = codeableconcept.CodeableConcept()
     specimen.type.coding = []
     coding = c.Coding()
-    coding.code = obj['sampled_tissue']['id']
-    coding.display = obj['sampled_tissue']['label']
+    coding.code = obj['sampledTissue']['id']
+    coding.display = obj['sampledTissue']['label']
     specimen.type.coding.append(coding)
     # description
     if 'description' in obj.keys():
@@ -234,30 +240,30 @@ def fhir_specimen(obj):
     # procedure
     specimen.collection = s.SpecimenCollection()
     specimen.collection.method = fhir_codeable_concept(obj['procedure']['code'])
-    if 'body_site' in obj['procedure'].keys():
-        specimen.collection.bodySite = fhir_codeable_concept(obj['procedure']['body_site'])
+    if 'bodySite' in obj['procedure'].keys():
+        specimen.collection.bodySite = fhir_codeable_concept(obj['procedure']['bodySite'])
     # Note on taxonomy from phenopackets specs:
     # Individuals already contain a taxonomy attribute so this attribute is not needed.
     # extensions
     specimen.extension = []
     # individual_age_at_collection
-    if 'individual_age_at_collection' in obj.keys():
+    if 'individualAgeAtCollection' in obj.keys():
         ind_age_at_collection_extension = fhir_age(
             obj, PHENOPACKETS_ON_FHIR_MAPPING['biosample']['individual_age_at_collection'],
-            'individual_age_at_collection'
+            'individualAgeAtCollection'
         )
         specimen.extension.append(ind_age_at_collection_extension)
     concept_extensions = codeable_concepts_fields(
-        ['histological_diagnosis', 'tumor_progression', 'tumor_grade', 'diagnostic_markers'],
+        ['histologicalDiagnosis', 'tumorProgression', 'tumorGrade', 'diagnosticMarkers'],
         'biosample', obj
     )
     for concept in concept_extensions:
         specimen.extension.append(concept)
 
-    if 'is_control_sample' in obj.keys():
+    if 'isControlSample' in obj.keys():
         control_extension = extension.Extension()
         control_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['biosample']['is_control_sample']
-        control_extension.valueBoolean = obj['is_control_sample']
+        control_extension.valueBoolean = obj['isControlSample']
         specimen.extension.append(control_extension)
     # TODO 2m extensions - references
     return specimen.as_json()

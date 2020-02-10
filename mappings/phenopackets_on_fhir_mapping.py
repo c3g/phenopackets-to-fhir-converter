@@ -68,10 +68,10 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
         "title": "Biosample",
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/Biosample",
         "individual_age_at_collection": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-individual-age-at-collection",
-        "histological_diagnosis": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-histological-diagnosis",
-        "tumor_progression": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-progression",
-        "tumor_grade": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-grade",
-        "diagnostic_markers": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-diagnostic-markers",
+        "histologicalDiagnosis": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-histological-diagnosis",
+        "tumorProgression": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-progression",
+        "tumorGrade": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-grade",
+        "diagnosticMarkers": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-diagnostic-markers",
         "is_control_sample": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-control"
     },
     "phenotypic_feature": {

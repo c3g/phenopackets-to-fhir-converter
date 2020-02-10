@@ -93,3 +93,13 @@ BIOSAMPLE = {
         }
     }
 }
+
+HTS_FILE = {
+   "uri":"https://data.example/genomes/germline_wgs.vcf.gz",
+   "description":"Matched normal germline sample",
+   "htsFormat":"VCF",
+   "genomeAssembly":"GRCh38",
+   "individualToSampleIdentifiers":{
+      "patient:1":"NA12345"
+   }
+}

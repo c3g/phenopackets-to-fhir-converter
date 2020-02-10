@@ -35,5 +35,10 @@
             "type": "object",
             "description": "Mapping between individual or biosample IDs and the sample identifier in the HTS file."
         }
-    }
+    },
+    "required": [
+        "uri",
+        "htsFormat",
+        "genomeAssembly"
+    ]
 }

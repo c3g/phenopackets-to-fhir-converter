@@ -20,5 +20,6 @@ class SpecimenTestCase(unittest.TestCase):
         self.assertIsNotNone(biosample['collection']['bodySite'])
         self.assertIsNotNone(biosample['type'])
 
+
 if __name__ == '__main__':
     unittest.main()

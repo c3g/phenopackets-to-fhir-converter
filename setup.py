@@ -13,5 +13,6 @@ setuptools.setup(
     description='Library to convert Phenopackets objects to FHIR',
     install_requires=[
         "fhirclient>=3.2,<4.0",
+        "jsonschema>=3.2.0"
     ]
 )

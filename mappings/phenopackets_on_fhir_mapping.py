@@ -18,7 +18,7 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
             "code": "phenopacket"
         },
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/Phenopacket",
-        "phenotypic_features": {
+        "phenotypicFeatures": {
             "title": "Phenotypic Features",
             "code": {
                 "system": "http://ga4gh.org/fhir/phenopackets/CodeSystem/section-type",
@@ -54,7 +54,7 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
                 "display": "Diseases"
             }
         },
-        "hts_files": {
+        "htsFiles": {
             "title": "HTS Files",
             "code": {
                 "system": "http://ga4gh.org/fhir/phenopackets/CodeSystem/section-type",

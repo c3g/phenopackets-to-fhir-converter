@@ -39,10 +39,16 @@ def fhir_codeable_concept(obj):
         coding = fhir_coding_util(obj)
         codeable_concept.coding.append(coding)
     return codeable_concept
-
+# """ Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions. """
 
 def codeable_concepts_fields(field_list, profile, obj):
-    """ Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions. """
+    """
+    Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions.
+    :param field_list: fields to convert to codeable concepts
+    :param profile: name of an object in phenopackets mappings
+    :param obj: object to which fields belong to
+    :return:
+    """
 
     concept_extensions = []
     for field in field_list:
@@ -55,14 +61,19 @@ def codeable_concepts_fields(field_list, profile, obj):
 
 
 def age_to_fhir(obj, mapping, field):
-    """ Generic function to convert Age or AgeRange to FHIR Age. """
+    """
+    Generic function to convert Phenopackets Age or AgeRange to FHIR Age.
+    :param obj: object to which field Age or AgeRange belongs to
+    :param mapping: mapping from PHENOPACKETS_ON_FHIR
+    :param field: name of the field that stores age
+    :return:
+    """
 
     age_extension = extension.Extension()
     age_extension.url = mapping
     if isinstance(obj[field]['age'], dict):
         age_extension.valueRange = range.Range()
         age_extension.valueRange.low = quantity.Quantity()
-        # TODO check this nesting
         age_extension.valueRange.low.unit = obj[field]['age']['start']['age']
         age_extension.valueRange.high = quantity.Quantity()
         age_extension.valueRange.high.unit = obj[field]['age']['end']['age']
@@ -89,26 +100,33 @@ def check_disease_onset(disease):
 
 
 def individual_to_fhir(obj):
-    """ Converts Individual to FHIR Patient. """
+    """
+    Converts Individual to FHIR Patient.
+    :param obj: Individual json
+    :return: FHIR Patient json
+    """
 
     # first validate if phenopackets object is well-formed
     schema_path = os.path.join(SCHEMA_PATH, 'individual_schema.json')
-    check_obj = validate_schema(schema_path, obj)
-    if check_obj:
-        patient = p.Patient()
-        patient.id = obj['id']
-        patient.birthDate = fhirdate.FHIRDate(obj.get('dateOfBirth', None))
-        patient.gender = obj.get('sex', None)
-        patient.active = obj.get('active', None)
-        patient.deceasedBoolean = obj.get('deceased', None)
-        patient.extension = list()
-        # age
-        if 'age' in obj:
-            age_extension = age_to_fhir(obj, PHENOPACKETS_ON_FHIR_MAPPING['individual']['age'], 'age')
-            patient.extension.append(age_extension)
-        # karyotypic_sex
+    try:
+        validate_schema(schema_path, obj)
+    except jsonschema.exceptions.ValidationError:
+        raise Exception("The individual object is not valid.")
+
+    patient = p.Patient()
+    patient.id = obj['id']
+    patient.birthDate = fhirdate.FHIRDate(obj.get('dateOfBirth', None))
+    patient.gender = obj.get('sex', None)
+    patient.active = obj.get('active', None)
+    patient.deceasedBoolean = obj.get('deceased', None)
+    patient.extension = list()
+    # age
+    if 'age' in obj:
+        age_extension = age_to_fhir(obj, PHENOPACKETS_ON_FHIR_MAPPING['individual']['age'], 'age')
+        patient.extension.append(age_extension)
+    # karyotypic_sex
+    if 'karyotypicSex' in obj:
         karyotypic_sex_extension = extension.Extension()
-        #TODO decide what to do with mappings that use snake_case
         karyotypic_sex_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypicSex']['url']
         karyotypic_sex_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
         karyotypic_sex_extension.valueCodeableConcept.coding = list()
@@ -118,21 +136,19 @@ def individual_to_fhir(obj):
         coding.system = PHENOPACKETS_ON_FHIR_MAPPING['individual']['karyotypicSex']['system']
         karyotypic_sex_extension.valueCodeableConcept.coding.append(coding)
         patient.extension.append(karyotypic_sex_extension)
-        # taxonomy
-        if 'taxonomy' in obj:
-            taxonomy_extension = extension.Extension()
-            taxonomy_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['taxonomy']
-            taxonomy_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
-            taxonomy_extension.valueCodeableConcept.coding = list()
-            coding = c.Coding()
-            coding.display = obj.get('taxonomy', None).get('label', None)
-            coding.code = obj.get('taxonomy', None).get('id', None)
-            taxonomy_extension.valueCodeableConcept.coding.append(coding)
-            patient.extension.append(taxonomy_extension)
-        return patient.as_json()
+    # taxonomy
+    if 'taxonomy' in obj:
+        taxonomy_extension = extension.Extension()
+        taxonomy_extension.url = PHENOPACKETS_ON_FHIR_MAPPING['individual']['taxonomy']
+        taxonomy_extension.valueCodeableConcept = codeableconcept.CodeableConcept()
+        taxonomy_extension.valueCodeableConcept.coding = list()
+        coding = c.Coding()
+        coding.display = obj.get('taxonomy', None).get('label', None)
+        coding.code = obj.get('taxonomy', None).get('id', None)
+        taxonomy_extension.valueCodeableConcept.coding.append(coding)
+        patient.extension.append(taxonomy_extension)
+    return patient.as_json()
 
-    else:
-        raise Exception("The individual object is not valid.")
 
 #TODO remove ?
 def procedure_to_fhir(obj):
@@ -147,7 +163,11 @@ def procedure_to_fhir(obj):
 
 
 def phenotypic_feature_to_fhir(obj):
-    """ Converts phenotypic feature to FHIR Observation. """
+    """
+    Converts Phenotypic feature to FHIR Observation.
+    :param obj: PhenotypicFeature json
+    :return: FHIR Observation json
+    """
 
     schema_path = os.path.join(SCHEMA_PATH, 'phenotypic_feature_schema.json')
     try:
@@ -192,7 +212,6 @@ def phenotypic_feature_to_fhir(obj):
             evidence_reference.extension = []
             evidence_reference_id = extension.Extension()
             evidence_reference_id.url = PHENOPACKETS_ON_FHIR_MAPPING['externalReference']['idUrl']
-            # GA4GH guide requires valueURL but there is no such property
             evidence_reference_id.valueUri = obj['evidence']['reference']['id']
             evidence_reference.extension.append(evidence_reference_id)
             if 'description' in obj['evidence']['reference']:
@@ -210,7 +229,11 @@ def phenotypic_feature_to_fhir(obj):
 
 
 def biosample_to_fhir(obj):
-    """ Converts biosample to FHIR Specimen. """
+    """
+    Converts Biosample to FHIR Specimen.
+    :param obj: Biosample json
+    :return: FHIR Specimen json
+    """
 
     schema_path = os.path.join(SCHEMA_PATH, 'biosample_schema.json')
     try:
@@ -272,7 +295,11 @@ def biosample_to_fhir(obj):
 
 
 def hts_file_to_fhir(obj):
-    """ Converts HTS file to FHIR DocumentReference. """
+    """
+    Converts HTS file to FHIR DocumentReference.
+    :param obj: HTS file json
+    :return: FHIR DocumentReference json
+    """
 
     schema_path = os.path.join(SCHEMA_PATH, 'hts_file_schema.json')
     try:
@@ -288,10 +315,9 @@ def hts_file_to_fhir(obj):
     doc_content.attachment = attachment.Attachment()
     doc_content.attachment.url = obj['uri']
     if 'description' in obj:
-        doc_content.attachment.title = obj.get('description', None)
+        doc_content.attachment.title = obj['description']
     doc_ref.content.append(doc_content)
     doc_ref.indexed = fhirdate.FHIRDate()
-    # check what date it should be  - when it's retrieved or created
     doc_ref.indexed.date = datetime.now()
     doc_ref.extension = []
     genome_assembly = extension.Extension()
@@ -302,11 +328,14 @@ def hts_file_to_fhir(obj):
 
 
 def gene_to_fhir(obj):
-    """ Gene corresponds to Observation.component."""
+    """
+    Convert Gene to Observation.component:gene property.
+    GA4GH Phenopackets Implementation Guide provides a link to Genomics Reporting Implementation Guide (STU1) mapping
+    http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/region-studied .
+    :param obj: gene json
+    :return: Observation.component:gene json
+    """
 
-    # GA4GH to FHIR Mapping Guide provides a link to
-    # Genomics Reporting Implementation Guide (STU1) mapping
-    # http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/region-studied
     schema_path = os.path.join(SCHEMA_PATH, 'gene_schema.json')
     try:
         validate_schema(schema_path, obj)
@@ -323,7 +352,13 @@ def gene_to_fhir(obj):
 
 
 def variant_to_fhir(obj):
-    """ Variant corresponds to Observation.component:variant. """
+    """
+    Variant corresponds to Observation.component:variant.
+    GA4GH Phenopackets Implementation Guide provides a link to Genomics Reporting Implementation Guide (STU1) mapping
+    http://hl7.org/fhir/uv/genomics-reporting/STU1/variant.html .
+    :param obj: Variant json
+    :return: Observation.component:variant json
+    """
 
     schema_path = os.path.join(SCHEMA_PATH, 'variant_schema.json')
     try:
@@ -339,7 +374,11 @@ def variant_to_fhir(obj):
 
 
 def disease_to_fhir(obj):
-    """ Converts Disease to FHIR Condition. """
+    """
+    Converts Disease to FHIR Condition.
+    :param obj: Disease json
+    :return: FHIR Condition json
+    """
 
     schema_path = os.path.join(SCHEMA_PATH, 'disease_schema.json')
     try:
@@ -355,7 +394,7 @@ def disease_to_fhir(obj):
     condition.subject.reference = 'unknown'
     condition.extension = []
     # only adds disease-onset if it's ontology term
-    # NOTE it is required element by Pheno-FHIR mapping guide but not Phenopackets
+    # NOTE it is required element by Phenopackets IG but not Phenopackets
     # what do to if it's AGE string?
     if check_disease_onset(obj):
         onset_extension = extension.Extension()
@@ -374,7 +413,12 @@ def disease_to_fhir(obj):
 
 
 def _get_section_object(nested_obj, title):
-    """ Internal function to convert phenopacket m2m objects to Composition section. """
+    """
+    Internal function to convert phenopacket m2m objects to Composition section.
+    :param nested_obj: m2m relationship object
+    :param title: field name that holds m2m relationship
+    :return: section content object
+    """
 
     section_content = comp.CompositionSection()
     section_values = PHENOPACKETS_ON_FHIR_MAPPING['phenopacket'][title]
@@ -396,13 +440,19 @@ def _get_section_object(nested_obj, title):
         elif item.get('uri'):
             entry.reference = item['uri']
         else:
+            # generate uuid when no 'id' or 'uri' present
             entry.reference = str(uuid.uuid1())
         section_content.entry.append(entry)
     return section_content
 
 
 def phenopacket_to_fhir(obj):
-    """ Converts Phenopacket to FHIR Composition. """
+    """
+    Converts Phenopacket to FHIR Composition.
+    :param obj: Phenopacket json
+    :return: FHIR Composition json
+    """
+
     schema_path = os.path.join(SCHEMA_PATH, 'phenopacket_schema.json')
     try:
         validate_schema(schema_path, obj)
@@ -412,7 +462,8 @@ def phenopacket_to_fhir(obj):
     if 'id' in obj:
         composition.id = obj['id']
     composition.subject = fhirreference.FHIRReference()
-    composition.subject.reference = str(obj['subject']['id'])
+    if 'subject' in obj:
+        composition.subject.reference = str(obj['subject']['id'])
     composition.title = PHENOPACKETS_ON_FHIR_MAPPING['phenopacket']['title']
     # elements in Composition required by FHIR spec
     composition.status = 'preliminary'

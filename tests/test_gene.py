@@ -1,19 +1,19 @@
 import unittest
-from converters.resources import fhir_obs_component_region_studied
+from converters.resources import gene_to_fhir
 from .constants import GENE
 
 
-class ObservationComponentTestCase(unittest.TestCase):
+class GeneTestCase(unittest.TestCase):
     def test_gene(self):
-        gene = fhir_obs_component_region_studied(GENE)
-        self.assertIsInstance(gene['code'], dict)
-        self.assertIsInstance(gene['code']['coding'], list)
-        for item in gene['code']['coding']:
+        observation_component_g = gene_to_fhir(GENE)
+        self.assertIsInstance(observation_component_g['code'], dict)
+        self.assertIsInstance(observation_component_g['code']['coding'], list)
+        for item in observation_component_g['code']['coding']:
             self.assertIsNotNone(item['code'])
             self.assertEqual(item['display'], 'Gene studied [ID]')
             self.assertEqual(item['system'], 'https://loinc.org')
-        self.assertIsInstance(gene['valueCodeableConcept']['coding'], list)
-        for item in gene['valueCodeableConcept']['coding']:
+        self.assertIsInstance(observation_component_g['valueCodeableConcept']['coding'], list)
+        for item in observation_component_g['valueCodeableConcept']['coding']:
             self.assertIsNotNone(item['code'])
             self.assertIsNotNone(item['display'])
             self.assertEqual(item['system'], 'https://www.genenames.org/')

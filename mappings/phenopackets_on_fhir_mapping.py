@@ -5,7 +5,7 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
         "title": "Individual",
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/Individual",
         "age": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/individual-age",
-        "karyotypic_sex": {
+        "karyotypicSex": {
             "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/individual-karyotypic-sex",
             "system": "http://ga4gh.org/fhir/phenopackets/CodeSystem/karyotypic-sex"
         },
@@ -67,14 +67,14 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
     "biosample": {
         "title": "Biosample",
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/Biosample",
-        "individual_age_at_collection": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-individual-age-at-collection",
+        "individualAgeAtCollection": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-individual-age-at-collection",
         "histologicalDiagnosis": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-histological-diagnosis",
         "tumorProgression": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-progression",
         "tumorGrade": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-tumor-grade",
         "diagnosticMarkers": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-diagnostic-markers",
-        "is_control_sample": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-control"
+        "isControlSample": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/biosample-control"
     },
-    "phenotypic_feature": {
+    "phenotypicFeature": {
         "title": "Phenotypic Feature",
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/PhenotypicFeature",
         "severity": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/phenotypic-feature-severity",
@@ -83,21 +83,21 @@ PHENOPACKETS_ON_FHIR_MAPPING = {
         "evidence": {
             "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/evidence",
             # fixed value
-            "evidence_code": "evidenceCode"
+            "evidenceCode": "evidenceCode"
         }
     },
-    "external_reference": {
+    "externalReference": {
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/external-reference",
         # fixed values
-        "id_url": "id",
-        "description_url": "description"
+        "idUrl": "id",
+        "descriptionUrl": "description"
     },
-    "hts_file": {
+    "htsFile": {
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/HtsFile",
-        "genome_assembly": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/htsfile-genome-assembly",
+        "genomeAssembly": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/htsfile-genome-assembly",
         # fixed value
         "status": "current",
-        "hts_format": "http://ga4gh.org/fhir/phenopackets/CodeSystem/hts-format"
+        "htsFormat": "http://ga4gh.org/fhir/phenopackets/CodeSystem/hts-format"
     },
     "disease": {
         "url": "http://ga4gh.org/fhir/phenopackets/StructureDefinition/Disease",

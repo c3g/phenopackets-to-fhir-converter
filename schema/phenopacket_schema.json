@@ -1,1140 +1,1164 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
-    "title": "Dataset Phenopacket Schema",
-    "description": "An anonymous phenotypic description of an individual or biosample with potential genes of interest and/or diagnoses. The concept has multiple use-cases.",
-    "type": "object",
-    "properties": {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "TODO",
+  "title": "Dataset Phenopacket Schema",
+  "description": "An anonymous phenotypic description of an individual or biosample with potential genes of interest and/or diagnoses. The concept has multiple use-cases.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique, arbitrary, researcher-specified identifier for the phenopacket."
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
         "id": {
-            "type": "string",
-            "description": "Unique, arbitrary, researcher-specified identifier for the phenopacket."
+          "type": "string",
+          "description": "A unique researcher-specified identifier for an individual."
         },
-        "subject": {
+        "alternateIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "One of possibly many alternative identifiers for an individual."
+          },
+          "description": "A list of alternative identifiers for an individual."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "A timestamp representing an individual's date of birth; either exactly or imprecisely."
+        },
+        "sex": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN_SEX",
+            "FEMALE",
+            "MALE",
+            "OTHER_SEX"
+          ],
+          "description": "The phenotypic sex of an individual, as would be determined by a midwife or physician at birth."
+        },
+        "karyotypicSex": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN_KARYOTYPE",
+            "XX",
+            "XY",
+            "XO",
+            "XXY",
+            "XXX",
+            "XXYY",
+            "XXXY",
+            "XXXX",
+            "XYY",
+            "OTHER_KARYOTYPE"
+          ],
+          "description": "The karyotypic sex of an individual."
+        },
+        "taxonomy": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "A CURIE-style identifier for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+            },
+            "label": {
+              "type": "string",
+              "description": "A human readable class name for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "description": "An ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "description": "A subject of a phenopacket, representing either a human (typically) or another organism."
+    },
+    "phenotypicFeatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Human-readable text describing the phenotypic feature; NOT for structured text."
+          },
+          "type": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "A unique researcher-specified identifier for an individual."
-                },
-                "alternateIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "description": "One of possibly many alternative identifiers for an individual."
-                    },
-                    "description": "A list of alternative identifiers for an individual."
-                },
-                "dateOfBirth": {
-                    "type": "string",
-                    "description": "A timestamp representing an individual's date of birth; either exactly or imprecisely."
-                },
-                "sex": {
-                    "type": "string",
-                    "enum": [
-                        "UNKNOWN_SEX",
-                        "FEMALE",
-                        "MALE",
-                        "OTHER_SEX"
-                    ],
-                    "description": "The phenotypic sex of an individual, as would be determined by a midwife or physician at birth."
-                },
-                "karyotypicSex": {
-                    "type": "string",
-                    "enum": [
-                        "UNKNOWN_KARYOTYPE",
-                        "XX",
-                        "XY",
-                        "XO",
-                        "XXY",
-                        "XXX",
-                        "XXYY",
-                        "XXXY",
-                        "XXXX",
-                        "XYY",
-                        "OTHER_KARYOTYPE"
-                    ],
-                    "description": "The karyotypic sex of an individual."
-                },
-                "taxonomy": {
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "type": "string",
-                            "description": "A CURIE-style identifier for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                        },
-                        "label": {
-                            "type": "string",
-                            "description": "A human readable class name for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                        }
-                    },
-                    "required": [
-                        "id",
-                        "label"
-                    ],
-                    "description": "An ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                }
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term which describes the phenotype."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term which describes the phenotype."
+              }
             },
             "required": [
-                "id"
+              "id",
+              "label"
             ],
-            "description": "A subject of a phenopacket, representing either a human (typically) or another organism."
-        },
-        "phenotypicFeatures": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "description": {
-                        "type": "string",
-                        "description": "Human-readable text describing the phenotypic feature; NOT for structured text."
-                    },
-                    "type": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term which describes the phenotype."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term which describes the phenotype."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term which describes the phenotype."
-                    },
-                    "negated": {
-                        "type": "boolean",
-                        "description": "Whether the feature is present (false) or absent (true, feature is negated); default is false."
-                    },
-                    "severity": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term that describes the severity of the condition."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term that describes the severity of the condition."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term that describes the severity of the condition."
-                    },
-                    "modifier": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "A CURIE-style identifier for an ontology term that expounds on the phenotypic feature."
-                                },
-                                "label": {
-                                    "type": "string",
-                                    "description": "A human readable class name for an ontology term that expounds on the phenotypic feature."
-                                }
-                            },
-                            "required": [
-                                "id",
-                                "label"
-                            ],
-                            "description": "An ontology term that expounds on the phenotypic feature."
-                        },
-                        "description": "A list of ontology terms that provide more expressive / precise descriptions of a phenotypic feature, including e.g. positionality or external factors."
-                    },
-                    "onset": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                    },
-                    "evidence": {
-                        "type": "object",
-                        "properties": {
-                            "evidenceCode": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": "A CURIE-style identifier for an ontology term that represents the evidence type."
-                                    },
-                                    "label": {
-                                        "type": "string",
-                                        "description": "A human readable class name for an ontology term that represents the evidence type."
-                                    }
-                                },
-                                "required": [
-                                    "id",
-                                    "label"
-                                ],
-                                "description": "An ontology term that represents the evidence type."
-                            },
-                            "reference": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "description": "An application-specific free-text description."
-                                    }
-                                },
-                                "required": [
-                                    "id"
-                                ],
-                                "description": "An encoding of information about a reference to an external resource."
-                            }
-                        },
-                        "required": [
-                            "evidenceCode"
-                        ],
-                        "description": "One or more pieces of evidence that specify how the phenotype was determined."
-                    }
-                },
-                "description": "A description of a phenotype that characterizes the proband of a Phenopacket."
-            },
-            "description": "A list of phenotypic features observed in the proband."
-        },
-        "biosamples": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Unique arbitrary, researcher-specified identifier for the biosample."
-                    },
-                    "individualId": {
-                        "type": "string",
-                        "description": "Identifier for the individual this biosample was sampled from."
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Human-readable, unstructured text describing the biosample or providing additional information."
-                    },
-                    "sampledTissue": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
-                    },
-                    "phenotypicFeatures": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "description": {
-                                    "type": "string",
-                                    "description": "Human-readable text describing the phenotypic feature; NOT for structured text."
-                                },
-                                "type": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string",
-                                            "description": "A CURIE-style identifier for an ontology term which describes the phenotype."
-                                        },
-                                        "label": {
-                                            "type": "string",
-                                            "description": "A human readable class name for an ontology term which describes the phenotype."
-                                        }
-                                    },
-                                    "required": [
-                                        "id",
-                                        "label"
-                                    ],
-                                    "description": "An ontology term which describes the phenotype."
-                                },
-                                "negated": {
-                                    "type": "boolean",
-                                    "description": "Whether the feature is present (false) or absent (true, feature is negated); default is false."
-                                },
-                                "severity": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string",
-                                            "description": "A CURIE-style identifier for an ontology term that describes the severity of the condition."
-                                        },
-                                        "label": {
-                                            "type": "string",
-                                            "description": "A human readable class name for an ontology term that describes the severity of the condition."
-                                        }
-                                    },
-                                    "required": [
-                                        "id",
-                                        "label"
-                                    ],
-                                    "description": "An ontology term that describes the severity of the condition."
-                                },
-                                "modifier": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string",
-                                                "description": "A CURIE-style identifier for an ontology term that expounds on the phenotypic feature."
-                                            },
-                                            "label": {
-                                                "type": "string",
-                                                "description": "A human readable class name for an ontology term that expounds on the phenotypic feature."
-                                            }
-                                        },
-                                        "required": [
-                                            "id",
-                                            "label"
-                                        ],
-                                        "description": "An ontology term that expounds on the phenotypic feature."
-                                    },
-                                    "description": "A list of ontology terms that provide more expressive / precise descriptions of a phenotypic feature, including e.g. positionality or external factors."
-                                },
-                                "onset": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string",
-                                            "description": "A CURIE-style identifier for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                                        },
-                                        "label": {
-                                            "type": "string",
-                                            "description": "A human readable class name for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                                        }
-                                    },
-                                    "required": [
-                                        "id",
-                                        "label"
-                                    ],
-                                    "description": "An ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
-                                },
-                                "evidence": {
-                                    "type": "object",
-                                    "properties": {
-                                        "evidenceCode": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string",
-                                                    "description": "A CURIE-style identifier for an ontology term that represents the evidence type."
-                                                },
-                                                "label": {
-                                                    "type": "string",
-                                                    "description": "A human readable class name for an ontology term that represents the evidence type."
-                                                }
-                                            },
-                                            "required": [
-                                                "id",
-                                                "label"
-                                            ],
-                                            "description": "An ontology term that represents the evidence type."
-                                        },
-                                        "reference": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string",
-                                                    "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
-                                                },
-                                                "description": {
-                                                    "type": "string",
-                                                    "description": "An application-specific free-text description."
-                                                }
-                                            },
-                                            "required": [
-                                                "id"
-                                            ],
-                                            "description": "An encoding of information about a reference to an external resource."
-                                        }
-                                    },
-                                    "required": [
-                                        "evidenceCode"
-                                    ],
-                                    "description": "One or more pieces of evidence that specify how the phenotype was determined."
-                                }
-                            },
-                            "description": "A description of a phenotype that characterizes a biosample of a Phenopacket."
-                        },
-                        "description": "A list of phenotypic features / abnormalities of the sample."
-                    },
-                    "taxonomy": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
-                    },
-                    "individualAgeAtCollection": {
-                        "type": "object",
-                        "oneOf": [
-                            {
-                                "properties": {
-                                    "age": {
-                                        "type": "string",
-                                        "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                                    }
-                                },
-                                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
-                                "required": [
-                                    "age"
-                                ],
-                                "additionalProperties": false
-                            },
-                            {
-                                "properties": {
-                                    "start": {
-                                        "type": "object",
-                                        "properties": {
-                                            "age": {
-                                                "type": "string",
-                                                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                                            }
-                                        },
-                                        "required": [
-                                            "age"
-                                        ],
-                                        "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
-                                        "help": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                                    },
-                                    "end": {
-                                        "type": "object",
-                                        "properties": {
-                                            "age": {
-                                                "type": "string",
-                                                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                                            }
-                                        },
-                                        "required": [
-                                            "age"
-                                        ],
-                                        "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
-                                        "help": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                                    }
-                                },
-                                "description": "Age range (e.g. when a subject's age falls into a bin)",
-                                "required": [
-                                    "start",
-                                    "end"
-                                ],
-                                "additionalProperties": false
-                            }
-                        ]
-                    },
-                    "histologicalDiagnosis": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
-                    },
-                    "tumorProgression": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
-                    },
-                    "tumorGrade": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
-                    },
-                    "diagnosticMarkers": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "A CURIE-style identifier for an ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
-                                },
-                                "label": {
-                                    "type": "string",
-                                    "description": "A human readable class name for an ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
-                                }
-                            },
-                            "required": [
-                                "id",
-                                "label"
-                            ],
-                            "description": "An ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
-                        },
-                        "description": "A list of ontology terms representing clinically-relevant bio-markers."
-                    },
-                    "procedure": {
-                        "type": "object",
-                        "properties": {
-                            "code": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": "A CURIE-style identifier for an ontology term that represents a clinical procedure performed on a subject."
-                                    },
-                                    "label": {
-                                        "type": "string",
-                                        "description": "A human readable class name for an ontology term that represents a clinical procedure performed on a subject."
-                                    }
-                                },
-                                "required": [
-                                    "id",
-                                    "label"
-                                ],
-                                "description": "An ontology term that represents a clinical procedure performed on a subject."
-                            },
-                            "bodySite": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": "A CURIE-style identifier for an ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
-                                    },
-                                    "label": {
-                                        "type": "string",
-                                        "description": "A human readable class name for an ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
-                                    }
-                                },
-                                "required": [
-                                    "id",
-                                    "label"
-                                ],
-                                "description": "An ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
-                            }
-                        },
-                        "required": [
-                            "code"
-                        ],
-                        "description": "A description of a clinical procedure performed on a subject in order to extract a biosample."
-                    },
-                    "htsFiles": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "uri": {
-                                    "type": "string",
-                                    "description": "A valid URI to the file"
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Human-readable text describing the file."
-                                },
-                                "htsFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                        "SAM",
-                                        "BAM",
-                                        "CRAM",
-                                        "VCF",
-                                        "BCF",
-                                        "GVCF",
-                                        "FASTQ",
-                                        "UNKNOWN"
-                                    ],
-                                    "description": "The file's format; one of SAM, BAM, CRAM, VCF, BCF, GVCF, FASTQ, or UNKNOWN."
-                                },
-                                "genomeAssembly": {
-                                    "type": "string",
-                                    "description": "Genome assembly ID for the file, e.g. GRCh38."
-                                },
-                                "individualToSampleIdentifiers": {
-                                    "type": "object",
-                                    "description": "Mapping between individual or biosample IDs and the sample identifier in the HTS file."
-                                }
-                            },
-                            "description": "A link to a High-Throughput Sequencing (HTS) data file."
-                        },
-                        "description": "A list of HTS files derived from the biosample."
-                    },
-                    "variants": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "allele": {
-                                    "$schema": "http://json-schema.org/draft-07/schema#",
-                                    "$id": "todo",
-                                    "title": "Allele schema",
-                                    "description": "The variant's corresponding allele",
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string"
-                                        },
-                                        "hgvs": {
-                                            "type": "string"
-                                        },
-                                        "genomeAssembly": {
-                                            "type": "string"
-                                        },
-                                        "chr": {
-                                            "type": "string"
-                                        },
-                                        "pos": {
-                                            "type": "integer"
-                                        },
-                                        "re": {
-                                            "type": "string"
-                                        },
-                                        "alt": {
-                                            "type": "string"
-                                        },
-                                        "info": {
-                                            "type": "string"
-                                        },
-                                        "seqId": {
-                                            "type": "string"
-                                        },
-                                        "position": {
-                                            "type": "integer"
-                                        },
-                                        "deletedSequence": {
-                                            "type": "string"
-                                        },
-                                        "insertedSequence": {
-                                            "type": "string"
-                                        },
-                                        "iscn": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "oneOf": [
-                                        {
-                                            "required": [
-                                                "hgvs"
-                                            ]
-                                        },
-                                        {
-                                            "required": [
-                                                "genome_assembly"
-                                            ]
-                                        },
-                                        {
-                                            "required": [
-                                                "seq_id"
-                                            ]
-                                        },
-                                        {
-                                            "required": [
-                                                "iscn"
-                                            ]
-                                        }
-                                    ],
-                                    "dependencies": {
-                                        "genomeAssembly": [
-                                            "chr",
-                                            "pos",
-                                            "re",
-                                            "alt",
-                                            "info"
-                                        ],
-                                        "seqId": [
-                                            "position",
-                                            "deleted_sequence",
-                                            "inserted_sequence"
-                                        ]
-                                    }
-                                },
-                                "zygosity": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string",
-                                            "description": "A CURIE-style identifier for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                                        },
-                                        "label": {
-                                            "type": "string",
-                                            "description": "A human readable class name for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                                        }
-                                    },
-                                    "required": [
-                                        "id",
-                                        "label"
-                                    ],
-                                    "description": "An ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                                }
-                            },
-                            "description": "A representation used to describe candidate or diagnosed causative variants."
-                        },
-                        "description": "A list of variants determined to be present in the biosample."
-                    },
-                    "isControlSample": {
-                        "type": "boolean",
-                        "description": "Whether the sample is being used as a normal control."
-                    }
-                },
-                "required": [
-                    "id",
-                    "sampledTissue",
-                    "procedure"
-                ],
-                "description": "A unit of biological material from which the substrate molecules (e.g. genomic DNA, RNA, proteins) for molecular analyses are extracted, e.g. a tissue biopsy. Biosamples may be shared among several technical replicates or types of experiments."
-            },
-            "description": "Samples (e.g. biopsies) taken from the individual, if any."
-        },
-        "genes": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Official identifier of the gene. It SHOULD be a CURIE identifier with a prefix used by the official organism gene nomenclature committee, e.g. HGNC:347 for humans."
-                    },
-                    "alternateIds": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "description": "An alternative identifier from a resource where the gene is used or catalogued."
-                        },
-                        "description": "A list of identifiers for alternative resources where the gene is used or catalogued."
-                    },
-                    "symbol": {
-                        "type": "string",
-                        "description": "A gene's official gene symbol as designated by the organism's gene nomenclature committee, e.g. ETF1 from the HUGO Gene Nomenclature committee."
-                    }
-                },
-                "required": [
-                    "id",
-                    "symbol"
-                ],
-                "description": "A representation of an identifier for a gene."
-            },
-            "description": "Genes deemed to be relevant to the case; application-specific."
-        },
-        "variants": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "allele": {
-                        "$schema": "http://json-schema.org/draft-07/schema#",
-                        "$id": "todo",
-                        "title": "Allele schema",
-                        "description": "The variant's corresponding allele",
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string"
-                            },
-                            "hgvs": {
-                                "type": "string"
-                            },
-                            "genomeAssembly": {
-                                "type": "string"
-                            },
-                            "chr": {
-                                "type": "string"
-                            },
-                            "pos": {
-                                "type": "integer"
-                            },
-                            "re": {
-                                "type": "string"
-                            },
-                            "alt": {
-                                "type": "string"
-                            },
-                            "info": {
-                                "type": "string"
-                            },
-                            "seqId": {
-                                "type": "string"
-                            },
-                            "position": {
-                                "type": "integer"
-                            },
-                            "deletedSequence": {
-                                "type": "string"
-                            },
-                            "insertedSequence": {
-                                "type": "string"
-                            },
-                            "iscn": {
-                                "type": "string"
-                            }
-                        },
-                        "oneOf": [
-                            {
-                                "required": [
-                                    "hgvs"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "genome_assembly"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "seq_id"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "iscn"
-                                ]
-                            }
-                        ],
-                        "dependencies": {
-                            "genomeAssembly": [
-                                "chr",
-                                "pos",
-                                "re",
-                                "alt",
-                                "info"
-                            ],
-                            "seqId": [
-                                "position",
-                                "deleted_sequence",
-                                "inserted_sequence"
-                            ]
-                        }
-                    },
-                    "zygosity": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
-                    }
-                },
-                "description": "A representation used to describe candidate or diagnosed causative variants."
-            },
-            "description": "A list of variants identified in the proband."
-        },
-        "diseases": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "term": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "A CURIE-style identifier for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "A human readable class name for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "label"
-                        ],
-                        "description": "An ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
-                    },
-                    "onset": {
-                        "type": "object",
-                        "properties": {
-                            "age": {
-                                "type": "string",
-                                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
-                            }
-                        },
-                        "required": [
-                            "age"
-                        ],
-                        "description": "A representation of the age of onset of the disease"
-                    },
-                    "diseaseStage": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "A CURIE-style identifier for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
-                                },
-                                "label": {
-                                    "type": "string",
-                                    "description": "A human readable class name for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
-                                }
-                            },
-                            "required": [
-                                "id",
-                                "label"
-                            ],
-                            "description": "An ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
-                        },
-                        "description": "A list of terms representing the disease stage. Elements should be derived from child terms of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
-                    },
-                    "tnmFinding": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "A CURIE-style identifier for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
-                                },
-                                "label": {
-                                    "type": "string",
-                                    "description": "A human readable class name for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
-                                }
-                            },
-                            "required": [
-                                "id",
-                                "label"
-                            ],
-                            "description": "An ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
-                        },
-                        "description": "A list of terms representing the tumour TNM score. Elements should be derived from child terms of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
-                    }
-                },
-                "required": [
-                    "term"
-                ],
-                "description": "A representation of a diagnosis, i.e. an inference or hypothesis about the cause underlying the observed phenotypic abnormalities."
-            },
-            "description": "A list of diseases diagnosed in the proband."
-        },
-        "htsFiles": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "uri": {
-                        "type": "string",
-                        "description": "A valid URI to the file"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Human-readable text describing the file."
-                    },
-                    "htsFormat": {
-                        "type": "string",
-                        "enum": [
-                            "SAM",
-                            "BAM",
-                            "CRAM",
-                            "VCF",
-                            "BCF",
-                            "GVCF",
-                            "FASTQ",
-                            "UNKNOWN"
-                        ],
-                        "description": "The file's format; one of SAM, BAM, CRAM, VCF, BCF, GVCF, FASTQ, or UNKNOWN."
-                    },
-                    "genomeAssembly": {
-                        "type": "string",
-                        "description": "Genome assembly ID for the file, e.g. GRCh38."
-                    },
-                    "individualToSampleIdentifiers": {
-                        "type": "object",
-                        "description": "Mapping between individual or biosample IDs and the sample identifier in the HTS file."
-                    }
-                },
-                "description": "A link to a High-Throughput Sequencing (HTS) data file."
-            },
-            "description": "A list of HTS files derived from the individual."
-        },
-        "metaData": {
+            "description": "An ontology term which describes the phenotype."
+          },
+          "negated": {
+            "type": "boolean",
+            "description": "Whether the feature is present (false) or absent (true, feature is negated); default is false."
+          },
+          "severity": {
             "type": "object",
             "properties": {
-                "created": {
-                    "type": "string",
-                    "description": "ISO8601 timestamp specifying when when this object was created."
-                },
-                "createdBy": {
-                    "type": "string",
-                    "description": "Name of the person who created the phenopacket."
-                },
-                "submittedBy": {
-                    "type": "string",
-                    "description": "Name of the person who submitted the phenopacket."
-                },
-                "resources": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "Unique researcher-specified identifier for the resource."
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": "Human-readable name for the resource."
-                            },
-                            "namespacePrefix": {
-                                "type": "string",
-                                "description": "Prefix for objects from this resource. In the case of ontology resources, this should be the CURIE prefix."
-                            },
-                            "url": {
-                                "type": "string",
-                                "description": "Resource URL. In the case of ontologies, this should be an OBO or OWL file. Other resources should link to the official or top-level url."
-                            },
-                            "version": {
-                                "type": "string",
-                                "description": "The version of the resource or ontology used to make the annotation."
-                            },
-                            "iriPrefix": {
-                                "type": "string",
-                                "description": "The IRI prefix, when used with the namespace prefix and an object ID, should resolve the term or object from the resource in question."
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "name",
-                            "namespace_prefix",
-                            "url",
-                            "version",
-                            "iri_prefix"
-                        ],
-                        "description": "A description of an external resource used for referencing an object."
-                    },
-                    "description": "A list of resources or ontologies referenced in the phenopacket"
-                },
-                "updates": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "timestamp": {
-                                "type": "string",
-                                "description": "ISO8601 timestamp specifying when when this update occurred."
-                            },
-                            "updatedBy": {
-                                "type": "string",
-                                "description": "Information about the person/organization/network that performed the update."
-                            },
-                            "comment": {
-                                "type": "string",
-                                "description": "Free-text comment about the changes made and/or the reason for the update."
-                            }
-                        },
-                        "required": [
-                            "timestamp",
-                            "comment"
-                        ],
-                        "description": "An update event for a record (e.g. a phenopacket.)"
-                    },
-                    "description": "A list of updates to the phenopacket."
-                },
-                "phenopacketSchemaVersion": {
-                    "type": "string",
-                    "description": "Schema version of the current phenopacket."
-                },
-                "externalReferences": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "An application-specific free-text description."
-                            }
-                        },
-                        "required": [
-                            "id"
-                        ],
-                        "description": "An encoding of information about a reference to an external resource."
-                    },
-                    "description": "A list of external (non-resource) references."
-                }
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term that describes the severity of the condition."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term that describes the severity of the condition."
+              }
             },
-            "description": "A structured definition of the resources and ontologies used within a phenopacket."
-        }
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term that describes the severity of the condition."
+          },
+          "modifier": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "A CURIE-style identifier for an ontology term that expounds on the phenotypic feature."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "A human readable class name for an ontology term that expounds on the phenotypic feature."
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "description": "An ontology term that expounds on the phenotypic feature."
+            },
+            "description": "A list of ontology terms that provide more expressive / precise descriptions of a phenotypic feature, including e.g. positionality or external factors."
+          },
+          "onset": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "evidenceCode": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that represents the evidence type."
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that represents the evidence type."
+                  }
+                },
+                "required": [
+                  "id",
+                  "label"
+                ],
+                "description": "An ontology term that represents the evidence type."
+              },
+              "reference": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "An application-specific free-text description."
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "description": "An encoding of information about a reference to an external resource."
+              }
+            },
+            "required": [
+              "evidenceCode"
+            ],
+            "description": "One or more pieces of evidence that specify how the phenotype was determined."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "description": "A description of a phenotype that characterizes the proband of a Phenopacket."
+      },
+      "description": "A list of phenotypic features observed in the proband."
     },
-    "required": [
-        "id",
-        "metaData"
-    ]
+    "biosamples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique arbitrary, researcher-specified identifier for the biosample."
+          },
+          "individualId": {
+            "type": "string",
+            "description": "Identifier for the individual this biosample was sampled from."
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable, unstructured text describing the biosample or providing additional information."
+          },
+          "sampledTissue": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term describing the tissue from which the specimen was collected. The use of UBERON is recommended."
+          },
+          "phenotypicFeatures": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Human-readable text describing the phenotypic feature; NOT for structured text."
+                },
+                "type": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "A CURIE-style identifier for an ontology term which describes the phenotype."
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A human readable class name for an ontology term which describes the phenotype."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "description": "An ontology term which describes the phenotype."
+                },
+                "negated": {
+                  "type": "boolean",
+                  "description": "Whether the feature is present (false) or absent (true, feature is negated); default is false."
+                },
+                "severity": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "A CURIE-style identifier for an ontology term that describes the severity of the condition."
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A human readable class name for an ontology term that describes the severity of the condition."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "description": "An ontology term that describes the severity of the condition."
+                },
+                "modifier": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "A CURIE-style identifier for an ontology term that expounds on the phenotypic feature."
+                      },
+                      "label": {
+                        "type": "string",
+                        "description": "A human readable class name for an ontology term that expounds on the phenotypic feature."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label"
+                    ],
+                    "description": "An ontology term that expounds on the phenotypic feature."
+                  },
+                  "description": "A list of ontology terms that provide more expressive / precise descriptions of a phenotypic feature, including e.g. positionality or external factors."
+                },
+                "onset": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "A CURIE-style identifier for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A human readable class name for an ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "description": "An ontology term that describes the age at which the phenotypic feature was first noticed or diagnosed, e.g. HP:0003674."
+                },
+                "evidence": {
+                  "type": "object",
+                  "properties": {
+                    "evidenceCode": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "A CURIE-style identifier for an ontology term that represents the evidence type."
+                        },
+                        "label": {
+                          "type": "string",
+                          "description": "A human readable class name for an ontology term that represents the evidence type."
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "description": "An ontology term that represents the evidence type."
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "An application-specific free-text description."
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ],
+                      "description": "An encoding of information about a reference to an external resource."
+                    }
+                  },
+                  "required": [
+                    "evidenceCode"
+                  ],
+                  "description": "One or more pieces of evidence that specify how the phenotype was determined."
+                }
+              },
+                "required": [
+                  "type"
+                ],
+              "description": "A description of a phenotype that characterizes a biosample of a Phenopacket."
+            },
+            "description": "A list of phenotypic features / abnormalities of the sample."
+          },
+          "taxonomy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term specified when more than one organism may be studied. It is advised that codesfrom the NCBI Taxonomy resource are used, e.g. NCBITaxon:9606 for humans."
+          },
+          "individualAgeAtCollection": {
+            "type": "object",
+            "oneOf": [
+              {
+                "properties": {
+                  "age": {
+                    "type": "string",
+                    "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                  }
+                },
+                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
+                "required": [
+                  "age"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "properties": {
+                  "start": {
+                    "type": "object",
+                    "properties": {
+                      "age": {
+                        "type": "string",
+                        "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                      }
+                    },
+                    "required": [
+                      "age"
+                    ],
+                    "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
+                    "help": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                  },
+                  "end": {
+                    "type": "object",
+                    "properties": {
+                      "age": {
+                        "type": "string",
+                        "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                      }
+                    },
+                    "required": [
+                      "age"
+                    ],
+                    "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject.",
+                    "help": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+                  }
+                },
+                "description": "Age range (e.g. when a subject's age falls into a bin)",
+                "required": [
+                  "start",
+                  "end"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "histologicalDiagnosis": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term representing a refinement of the clinical diagnosis. Normal samples could be tagged with NCIT:C38757, representing a negative finding."
+          },
+          "tumorProgression": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term representing if the specimen is from a primary tumour, a metastasis, or a recurrence. There are multiple ways of representing this using ontology terms, and the terms chosen will have a specific meaning that is application specific.."
+          },
+          "tumorGrade": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term representing the tumour grade. This should be a child term of NCIT:C28076 (Disease Grade Qualifier) or equivalent."
+          },
+          "diagnosticMarkers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "A CURIE-style identifier for an ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "A human readable class name for an ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "description": "An ontology term representing a clinically-relevant bio-marker. Most of the assays, such as immunohistochemistry (IHC), are covered by the NCIT ontology under the sub-hierarchy NCIT:C25294 (Laboratory Procedure), e.g. NCIT:C68748 (HER2/Neu Positive), or NCIT:C131711 Human Papillomavirus-18 Positive).."
+            },
+            "description": "A list of ontology terms representing clinically-relevant bio-markers."
+          },
+          "procedure": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that represents a clinical procedure performed on a subject."
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that represents a clinical procedure performed on a subject."
+                  }
+                },
+                "required": [
+                  "id",
+                  "label"
+                ],
+                "description": "An ontology term that represents a clinical procedure performed on a subject."
+              },
+              "bodySite": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "A CURIE-style identifier for an ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "A human readable class name for an ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
+                  }
+                },
+                "required": [
+                  "id",
+                  "label"
+                ],
+                "description": "An ontology term that is specified when it is not possible to represent the procedure with a single ontology class."
+              }
+            },
+            "required": [
+              "code"
+            ],
+            "description": "A description of a clinical procedure performed on a subject in order to extract a biosample."
+          },
+          "htsFiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "description": "A valid URI to the file"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Human-readable text describing the file."
+                },
+                "htsFormat": {
+                  "type": "string",
+                  "enum": [
+                    "SAM",
+                    "BAM",
+                    "CRAM",
+                    "VCF",
+                    "BCF",
+                    "GVCF",
+                    "FASTQ",
+                    "UNKNOWN"
+                  ],
+                  "description": "The file's format; one of SAM, BAM, CRAM, VCF, BCF, GVCF, FASTQ, or UNKNOWN."
+                },
+                "genomeAssembly": {
+                  "type": "string",
+                  "description": "Genome assembly ID for the file, e.g. GRCh38."
+                },
+                "individualToSampleIdentifiers": {
+                  "type": "object",
+                  "description": "Mapping between individual or biosample IDs and the sample identifier in the HTS file."
+                }
+              },
+              "required": [
+                "uri",
+                "htsFormat",
+                "genomeAssembly"
+              ],
+              "description": "A link to a High-Throughput Sequencing (HTS) data file."
+            },
+            "description": "A list of HTS files derived from the biosample."
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "allele": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "$id": "todo",
+                  "title": "Allele schema",
+                  "description": "The variant's corresponding allele",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "hgvs": {
+                      "type": "string"
+                    },
+                    "genomeAssembly": {
+                      "type": "string"
+                    },
+                    "chr": {
+                      "type": "string"
+                    },
+                    "pos": {
+                      "type": "integer"
+                    },
+                    "re": {
+                      "type": "string"
+                    },
+                    "alt": {
+                      "type": "string"
+                    },
+                    "info": {
+                      "type": "string"
+                    },
+                    "seqId": {
+                      "type": "string"
+                    },
+                    "position": {
+                      "type": "integer"
+                    },
+                    "deletedSequence": {
+                      "type": "string"
+                    },
+                    "insertedSequence": {
+                      "type": "string"
+                    },
+                    "iscn": {
+                      "type": "string"
+                    }
+                  },
+                  "oneOf": [
+                    {
+                      "required": [
+                        "hgvs"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "genomeAssembly"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "seqId"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "iscn"
+                      ]
+                    }
+                  ],
+                  "dependencies": {
+                    "genomeAssembly": [
+                      "chr",
+                      "pos",
+                      "re",
+                      "alt",
+                      "info"
+                    ],
+                    "seqId": [
+                      "position",
+                      "deletedSequence",
+                      "insertedSequence"
+                    ]
+                  }
+                },
+                "zygosity": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "A CURIE-style identifier for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A human readable class name for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "description": "An ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+                }
+              },
+              "description": "A representation used to describe candidate or diagnosed causative variants."
+            },
+            "description": "A list of variants determined to be present in the biosample."
+          },
+          "isControlSample": {
+            "type": "boolean",
+            "description": "Whether the sample is being used as a normal control."
+          }
+        },
+        "required": [
+          "id",
+          "sampledTissue",
+          "procedure"
+        ],
+        "description": "A unit of biological material from which the substrate molecules (e.g. genomic DNA, RNA, proteins) for molecular analyses are extracted, e.g. a tissue biopsy. Biosamples may be shared among several technical replicates or types of experiments."
+      },
+      "description": "Samples (e.g. biopsies) taken from the individual, if any."
+    },
+    "genes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Official identifier of the gene. It SHOULD be a CURIE identifier with a prefix used by the official organism gene nomenclature committee, e.g. HGNC:347 for humans."
+          },
+          "alternateIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "An alternative identifier from a resource where the gene is used or catalogued."
+            },
+            "description": "A list of identifiers for alternative resources where the gene is used or catalogued."
+          },
+          "symbol": {
+            "type": "string",
+            "description": "A gene's official gene symbol as designated by the organism's gene nomenclature committee, e.g. ETF1 from the HUGO Gene Nomenclature committee."
+          }
+        },
+        "required": [
+          "id",
+          "symbol"
+        ],
+        "description": "A representation of an identifier for a gene."
+      },
+      "description": "Genes deemed to be relevant to the case; application-specific."
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "allele": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "todo",
+            "title": "Allele schema",
+            "description": "The variant's corresponding allele",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "hgvs": {
+                "type": "string"
+              },
+              "genomeAssembly": {
+                "type": "string"
+              },
+              "chr": {
+                "type": "string"
+              },
+              "pos": {
+                "type": "integer"
+              },
+              "re": {
+                "type": "string"
+              },
+              "alt": {
+                "type": "string"
+              },
+              "info": {
+                "type": "string"
+              },
+              "seqId": {
+                "type": "string"
+              },
+              "position": {
+                "type": "integer"
+              },
+              "deletedSequence": {
+                "type": "string"
+              },
+              "insertedSequence": {
+                "type": "string"
+              },
+              "iscn": {
+                "type": "string"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "hgvs"
+                ]
+              },
+              {
+                "required": [
+                  "genomeAssembly"
+                ]
+              },
+              {
+                "required": [
+                  "seqId"
+                ]
+              },
+              {
+                "required": [
+                  "iscn"
+                ]
+              }
+            ],
+            "dependencies": {
+              "genomeAssembly": [
+                "chr",
+                "pos",
+                "re",
+                "alt",
+                "info"
+              ],
+              "seqId": [
+                "position",
+                "deletedSequence",
+                "insertedSequence"
+              ]
+            }
+          },
+          "zygosity": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term taken from the Genotype Ontology (GENO) representing the zygosity of the variant."
+          }
+        },
+        "required": [
+          "allele"
+        ],
+        "description": "A representation used to describe candidate or diagnosed causative variants."
+      },
+      "description": "A list of variants identified in the proband."
+    },
+    "diseases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "term": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "A CURIE-style identifier for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+              },
+              "label": {
+                "type": "string",
+                "description": "A human readable class name for an ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "description": "An ontology term that represents the disease. It's recommended that one of the OMIM, Orphanet, or MONDO ontologies is used for rare human diseases."
+          },
+          "onset": {
+            "type": "object",
+            "properties": {
+              "age": {
+                "type": "string",
+                "description": "An ISO8601 duration string (e.g. P40Y10M05D for 40 years, 10 months, 5 days) representing an age of a subject."
+              }
+            },
+            "required": [
+              "age"
+            ],
+            "description": "A representation of the age of onset of the disease"
+          },
+          "diseaseStage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "A CURIE-style identifier for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "A human readable class name for an ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "description": "An ontology term that represents the disease stage. Terms should be children of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+            },
+            "description": "A list of terms representing the disease stage. Elements should be derived from child terms of NCIT:C28108 (Disease Stage Qualifier) or equivalent hierarchy from another ontology."
+          },
+          "tnmFinding": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "A CURIE-style identifier for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "A human readable class name for an ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "description": "An ontology term that represents the TNM score. Terms should be children of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+            },
+            "description": "A list of terms representing the tumour TNM score. Elements should be derived from child terms of NCIT:C48232 (Cancer TNM Finding) or equivalent hierarchy from another ontology."
+          }
+        },
+        "required": [
+          "term"
+        ],
+        "description": "A representation of a diagnosis, i.e. an inference or hypothesis about the cause underlying the observed phenotypic abnormalities."
+      },
+      "description": "A list of diseases diagnosed in the proband."
+    },
+    "htsFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "A valid URI to the file"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable text describing the file."
+          },
+          "htsFormat": {
+            "type": "string",
+            "enum": [
+              "SAM",
+              "BAM",
+              "CRAM",
+              "VCF",
+              "BCF",
+              "GVCF",
+              "FASTQ",
+              "UNKNOWN"
+            ],
+            "description": "The file's format; one of SAM, BAM, CRAM, VCF, BCF, GVCF, FASTQ, or UNKNOWN."
+          },
+          "genomeAssembly": {
+            "type": "string",
+            "description": "Genome assembly ID for the file, e.g. GRCh38."
+          },
+          "individualToSampleIdentifiers": {
+            "type": "object",
+            "description": "Mapping between individual or biosample IDs and the sample identifier in the HTS file."
+          }
+        },
+        "required": [
+          "uri",
+          "htsFormat",
+          "genomeAssembly"
+        ],
+        "description": "A link to a High-Throughput Sequencing (HTS) data file."
+      },
+      "description": "A list of HTS files derived from the individual."
+    },
+    "metaData": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "description": "ISO8601 timestamp specifying when when this object was created."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Name of the person who created the phenopacket."
+        },
+        "submittedBy": {
+          "type": "string",
+          "description": "Name of the person who submitted the phenopacket."
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique researcher-specified identifier for the resource."
+              },
+              "name": {
+                "type": "string",
+                "description": "Human-readable name for the resource."
+              },
+              "namespacePrefix": {
+                "type": "string",
+                "description": "Prefix for objects from this resource. In the case of ontology resources, this should be the CURIE prefix."
+              },
+              "url": {
+                "type": "string",
+                "description": "Resource URL. In the case of ontologies, this should be an OBO or OWL file. Other resources should link to the official or top-level url."
+              },
+              "version": {
+                "type": "string",
+                "description": "The version of the resource or ontology used to make the annotation."
+              },
+              "iriPrefix": {
+                "type": "string",
+                "description": "The IRI prefix, when used with the namespace prefix and an object ID, should resolve the term or object from the resource in question."
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "namespacePrefix",
+              "url",
+              "version",
+              "iriPrefix"
+            ],
+            "description": "A description of an external resource used for referencing an object."
+          },
+          "description": "A list of resources or ontologies referenced in the phenopacket"
+        },
+        "updates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "description": "ISO8601 timestamp specifying when when this update occurred."
+              },
+              "updatedBy": {
+                "type": "string",
+                "description": "Information about the person/organization/network that performed the update."
+              },
+              "comment": {
+                "type": "string",
+                "description": "Free-text comment about the changes made and/or the reason for the update."
+              }
+            },
+            "required": [
+              "timestamp",
+              "comment"
+            ],
+            "description": "An update event for a record (e.g. a phenopacket.)"
+          },
+          "description": "A list of updates to the phenopacket."
+        },
+        "phenopacketSchemaVersion": {
+          "type": "string",
+          "description": "Schema version of the current phenopacket."
+        },
+        "externalReferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "An application-specific identifier. It is RECOMMENDED that this is a CURIE that uniquely identifies the evidence source when combined with a resource; e.g. PMID:123456 with a resource `pmid`. It could also be a URI or other relevant identifier."
+              },
+              "description": {
+                "type": "string",
+                "description": "An application-specific free-text description."
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "description": "An encoding of information about a reference to an external resource."
+          },
+          "description": "A list of external (non-resource) references."
+        }
+      },
+      "required": [
+        "created",
+        "createdBy",
+        "resources"
+      ],
+      "description": "A structured definition of the resources and ontologies used within a phenopacket."
+    }
+  },
+  "required": [
+    "id",
+    "metaData"
+  ]
 }

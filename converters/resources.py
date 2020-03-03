@@ -16,7 +16,8 @@ import uuid
 
 
 def fhir_coding_util(obj):
-    """ Genenric function to convert object to FHIR Coding. """
+    """Genenric function to convert object to FHIR Coding.
+    """
 
     coding = c.Coding()
     coding.display = obj['label']
@@ -27,7 +28,8 @@ def fhir_coding_util(obj):
 
 
 def fhir_codeable_concept(obj):
-    """ Generic function to convert object to FHIR CodeableConcept. """
+    """Generic function to convert object to FHIR CodeableConcept.
+    """
 
     codeable_concept = codeableconcept.CodeableConcept()
     codeable_concept.coding = []
@@ -39,15 +41,15 @@ def fhir_codeable_concept(obj):
         coding = fhir_coding_util(obj)
         codeable_concept.coding.append(coding)
     return codeable_concept
-# """ Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions. """
+
 
 def codeable_concepts_fields(field_list, profile, obj):
-    """
-    Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions.
+    """Converts a list of fields to FHIR CodeableConcepts and returns a list of extensions.
+
     :param field_list: fields to convert to codeable concepts
     :param profile: name of an object in phenopackets mappings
     :param obj: object to which fields belong to
-    :return:
+    :return: list of extensions
     """
 
     concept_extensions = []
@@ -61,12 +63,12 @@ def codeable_concepts_fields(field_list, profile, obj):
 
 
 def age_to_fhir(obj, mapping, field):
-    """
-    Generic function to convert Phenopackets Age or AgeRange to FHIR Age.
+    """Generic function to convert Phenopackets Age or AgeRange to FHIR Age.
+
     :param obj: object to which field Age or AgeRange belongs to
     :param mapping: mapping from PHENOPACKETS_ON_FHIR
     :param field: name of the field that stores age
-    :return:
+    :return: age extension object
     """
 
     age_extension = extension.Extension()
@@ -84,10 +86,12 @@ def age_to_fhir(obj, mapping, field):
 
 
 def check_disease_onset(disease):
-    """
-    Phenopackets schema allows age to be represented by ISO8601 string,
+    """Phenopackets schema allows age to be represented by ISO8601 string,
     whereis Pheno-FHIR guide requires it to be represented by CodeableConcept.
     This function checks how age is represented in data.
+
+    :param disease: disease json object
+    :return: True/False
     """
     if disease.get('onset'):
         if isinstance(disease.get('onset').get('age'), dict):
@@ -100,8 +104,8 @@ def check_disease_onset(disease):
 
 
 def individual_to_fhir(obj):
-    """
-    Converts Individual to FHIR Patient.
+    """Converts Individual to FHIR Patient.
+
     :param obj: Individual json
     :return: FHIR Patient json
     """
@@ -152,7 +156,8 @@ def individual_to_fhir(obj):
 
 #TODO remove ?
 def procedure_to_fhir(obj):
-    """ Converts Procedure to FHIR Specimen collection. """
+    """Converts Procedure to FHIR Specimen collection.
+    """
 
     collection = s.SpecimenCollection()
     collection.id = str(obj['id'])
@@ -163,8 +168,8 @@ def procedure_to_fhir(obj):
 
 
 def phenotypic_feature_to_fhir(obj):
-    """
-    Converts Phenotypic feature to FHIR Observation.
+    """Converts Phenotypic feature to FHIR Observation.
+
     :param obj: PhenotypicFeature json
     :return: FHIR Observation json
     """
@@ -229,8 +234,8 @@ def phenotypic_feature_to_fhir(obj):
 
 
 def biosample_to_fhir(obj):
-    """
-    Converts Biosample to FHIR Specimen.
+    """Converts Biosample to FHIR Specimen.
+
     :param obj: Biosample json
     :return: FHIR Specimen json
     """
@@ -295,8 +300,8 @@ def biosample_to_fhir(obj):
 
 
 def hts_file_to_fhir(obj):
-    """
-    Converts HTS file to FHIR DocumentReference.
+    """Converts HTS file to FHIR DocumentReference.
+
     :param obj: HTS file json
     :return: FHIR DocumentReference json
     """
@@ -328,10 +333,10 @@ def hts_file_to_fhir(obj):
 
 
 def gene_to_fhir(obj):
-    """
-    Convert Gene to Observation.component:gene property.
+    """Convert Gene to Observation.component:gene property.
     GA4GH Phenopackets Implementation Guide provides a link to Genomics Reporting Implementation Guide (STU1) mapping
     http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/region-studied .
+
     :param obj: gene json
     :return: Observation.component:gene json
     """
@@ -352,10 +357,10 @@ def gene_to_fhir(obj):
 
 
 def variant_to_fhir(obj):
-    """
-    Variant corresponds to Observation.component:variant.
+    """Variant corresponds to Observation.component:variant.
     GA4GH Phenopackets Implementation Guide provides a link to Genomics Reporting Implementation Guide (STU1) mapping
-    http://hl7.org/fhir/uv/genomics-reporting/STU1/variant.html .
+    http://hl7.org/fhir/uv/genomics-reporting/STU1/variant.html.
+
     :param obj: Variant json
     :return: Observation.component:variant json
     """
@@ -374,8 +379,8 @@ def variant_to_fhir(obj):
 
 
 def disease_to_fhir(obj):
-    """
-    Converts Disease to FHIR Condition.
+    """Converts Disease to FHIR Condition.
+
     :param obj: Disease json
     :return: FHIR Condition json
     """
@@ -413,8 +418,8 @@ def disease_to_fhir(obj):
 
 
 def _get_section_object(nested_obj, title):
-    """
-    Internal function to convert phenopacket m2m objects to Composition section.
+    """Internal function to convert phenopacket m2m objects to Composition section.
+
     :param nested_obj: m2m relationship object
     :param title: field name that holds m2m relationship
     :return: section content object
@@ -447,8 +452,8 @@ def _get_section_object(nested_obj, title):
 
 
 def phenopacket_to_fhir(obj):
-    """
-    Converts Phenopacket to FHIR Composition.
+    """Converts Phenopacket to FHIR Composition.
+
     :param obj: Phenopacket json
     :return: FHIR Composition json
     """

@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/individual_schema.json",
     "title": "Phenopackets Individual schema",
     "description": "A subject of a phenopacket, representing either a human (typically) or another organism.",
     "type": "object",

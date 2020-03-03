@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/disease_schema.json",
     "title": "Phenopackets Disease schema",
     "description": "A representation of a diagnosis, i.e. an inference or hypothesis about the cause underlying the observed phenotypic abnormalities.",
     "type": "object",

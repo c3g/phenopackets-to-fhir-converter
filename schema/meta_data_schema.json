@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/meta_data_schema.json",
     "title": "Phenopackets MetaData schema",
     "description": "A structured definition of the resources and ontologies used within a phenopacket.",
     "type": "object",
@@ -50,10 +50,10 @@
                 "required": [
                     "id",
                     "name",
-                    "namespace_prefix",
+                    "namespacePrefix",
                     "url",
                     "version",
-                    "iri_prefix"
+                    "iriPrefix"
                 ],
                 "description": "A description of an external resource used for referencing an object."
             },

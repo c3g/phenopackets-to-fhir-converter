@@ -462,7 +462,7 @@ def phenopacket_to_fhir(obj):
     try:
         validate_schema(schema_path, obj)
     except jsonschema.exceptions.ValidationError:
-        raise Exception("The disease object is not valid.")
+        raise Exception("The phenopacket object is not valid.")
     composition = comp.Composition()
     if 'id' in obj:
         composition.id = obj['id']

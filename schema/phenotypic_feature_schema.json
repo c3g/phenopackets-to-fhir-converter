@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/phenotypic_feature_schema.json",
     "title": "Phenopackets phenotypic feature schema",
     "description": "A description of a phenotype that characterizes a subject or biosample of a Phenopacket.",
     "type": "object",

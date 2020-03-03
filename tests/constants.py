@@ -91,7 +91,44 @@ BIOSAMPLE = {
             "id": "UBERON_0001556",
             "label": "lower urinary tract"
         }
-    }
+    },
+    "phenotypicFeatures": [
+        {
+            "type": {
+                "id": "HP:0012219",
+                "label": "Erythema nodosum"
+            },
+            "severity": {
+                "id": "HP: 0012825",
+                "label": "Mild"
+            },
+            "onset": {
+                "id": "HP:0003577",
+                "label": "Congenital onset"
+            },
+            "evidence": {
+                "reference": {
+                    "id": "PMID:30962759",
+                    "description": "Recurrent Erythema Nodosum in a Child with a SHOC2 Gene Mutation"
+                },
+                "evidenceCode": {
+                    "id": "ECO:0006017",
+                    "label": "author statement from published clinical study used in manual assertion"
+                }
+            },
+            "negated": True,
+            "modifier": [
+                {
+                    "id": "HP: 0012825 ",
+                    "label": "Mild"
+                },
+                {
+                    "id": "HP: 0012823 ",
+                    "label": "Semi-mild"
+                }
+            ]
+        }
+    ]
 }
 
 HTS_FILE = {

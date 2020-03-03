@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/gene_schema.json",
     "title": "Phenopackets Gene schema",
     "description": "A representation of an identifier for a gene.",
     "type": "object",

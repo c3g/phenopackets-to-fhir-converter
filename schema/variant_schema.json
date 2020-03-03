@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "TODO",
+    "$id": "https://raw.githubusercontent.com/c3g/phenopackets-to-fhir-converter/master/schema/variant_schema.json",
     "title": "Phenopackets None schema",
     "description": "A representation used to describe candidate or diagnosed causative variants.",
     "type": "object",

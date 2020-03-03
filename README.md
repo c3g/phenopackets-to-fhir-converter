@@ -1,5 +1,7 @@
 # phenopackets-to-fhir converter
 
+[![Build Status](https://travis-ci.com/c3g/phenopackets-to-fhir-converter.svg?branch=master)](https://travis-ci.com/c3g/phenopackets-to-fhir-converter)
+
 ## Introduction
 
 **phenopackets-to-fhir** is a service to convert derived phenopackets objects to FHIR resources.

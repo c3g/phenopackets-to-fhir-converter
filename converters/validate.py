@@ -9,6 +9,13 @@ SCHEMA_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 's
 
 
 def validate_schema(schema, data):
+    """
+    :param schema: the json schema to validate with
+    :param data: the instance to validate
+    :return: True if the instance is valid, False if not
+    :raises: ValidationError if the instance is invalid
+    """
+
     with open(schema) as s:
         json_schema = json.loads(s.read())
     v = jsonschema.Draft7Validator(json_schema)

@@ -1,6 +1,6 @@
 # phenopackets-to-fhir converter
 
-##Introduction
+## Introduction
 
 **phenopackets-to-fhir** is a service to convert derived phenopackets objects to FHIR resources.
 The service is a part of the ongoing work for [CHORD Metadata service](https://github.com/c3g/chord_metadata_service).
